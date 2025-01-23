@@ -105,11 +105,20 @@ def fill_master_department_id(cr):
 
 def _hr_plan_activity_type_m2m_to_o2m(env):
     """Before, the activities in plans (hr.plan) were linked to the
-    plan_activity_type_ids field with an m2m field, now the field is the same but it
+    plan_activity_type_ids field with a m2m field, now the field
     is an o2m. We define the data in the table hr_plan_activity_type according to the
     table ou_legacy_16_0_hr_plan_hr_plan_activity_type_rel that we have defined
     previously in pre-migration to ensure that no data is lost.
     """
+    openupgrade.logged_query(
+        env.cr,
+        """
+        UPDATE hr_plan_activity_type hpat
+        SET plan_id = rel.hr_plan_id
+        FROM ou_legacy_16_0_hr_plan_hr_plan_activity_type_rel rel
+        WHERE rel.hr_plan_activity_type_id = hpat.id
+        """,
+    )
     openupgrade.logged_query(
         env.cr,
         """
@@ -124,7 +133,8 @@ def _hr_plan_activity_type_m2m_to_o2m(env):
             create_date,
             write_uid,
             write_date
-        ) SELECT rel.hr_plan_id,
+        )
+        SELECT rel.hr_plan_id,
             detail.activity_type_id,
             detail.summary,
             detail.responsible,
@@ -134,9 +144,9 @@ def _hr_plan_activity_type_m2m_to_o2m(env):
             detail.create_date,
             detail.write_uid,
             detail.write_date
-        FROM ou_legacy_16_0_hr_plan_hr_plan_activity_type_rel AS rel
-        LEFT JOIN hr_plan_activity_type AS detail
-            ON rel.hr_plan_activity_type_id = detail.id
+        FROM ou_legacy_16_0_hr_plan_hr_plan_activity_type_rel rel
+        JOIN hr_plan_activity_type detail ON rel.hr_plan_activity_type_id = detail.id
+        WHERE detail.plan_id != rel.hr_plan_id
         """,
     )
 
