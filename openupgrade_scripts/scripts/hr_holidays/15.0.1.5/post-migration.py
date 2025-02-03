@@ -34,6 +34,7 @@ def _map_hr_leave_allocation_state(env):
 
 @openupgrade.migrate()
 def migrate(env, version):
+    fill_hr_leave_type_requires_allocation(env)
     _map_hr_leave_state(env)
     _map_hr_leave_allocation_state(env)
     openupgrade.load_data(env.cr, "hr_holidays", "15.0.1.5/noupdate_changes.xml")
