@@ -161,6 +161,7 @@ def migrate(env, version):
     _set_task_type_fold_if_is_closed(env)
     _fill_project_task_is_closed(env)
     _fill_project_last_update_status_if_null(env)
+    _fill_project_allow_milestones(env)
     _compute_project_task_ancestor_id(env)
     _compute_project_task_is_analytic_account_id_changed(env)
 
