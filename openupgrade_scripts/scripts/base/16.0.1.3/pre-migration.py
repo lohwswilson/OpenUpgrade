@@ -97,7 +97,7 @@ def update_translatable_fields(cr):
             )
             continue
         # borrowed from odoo/tools/translate.py#_get_translation_upgrade_queries
-        translation_name = "%s,%s" % (model, field)
+        translation_name = f"{model},{field}"
         emtpy_src = """'{"en_US": ""}'::jsonb"""
         openupgrade.logged_query(
             cr,
