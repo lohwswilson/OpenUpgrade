@@ -76,6 +76,7 @@ merged_modules = {
     "pos_coupon": "pos_loyalty",
     "pos_gift_card": "pos_loyalty",
     "project_account": "project",
+    "purchase_requisition_stock_dropshipping": "purchase_requisition_stock",
     "sale_gift_card": "sale_loyalty",
     "sale_project_account": "sale_project",
     "website_sale_delivery_giftcard": "website_sale_loyalty_delivery",
